@@ -21,8 +21,8 @@ resource "aws_key_pair" "Key-Pair" {
   key_name = "MyKey"
 
   # Adding the SSH authorized key !
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDf+Z45qTZWlOzt4BasMulLwZEeBuP7W9WIQxifaQDTKSESf2v+jYTS+nE+xYkxAF8rwMKIbyTcreg9TjPah0O/3FfxRwkCEcAQYrP3DLQK5h2Tv56k3FmsX8gmmLrPFThDeYFKbai6JIcptA/s+z+5udTUDa+Ud6tnMesh5dLVSqqH0LjxsJ6wz+fLwPQDAy92AyzEHpgBJDQYNNMfoc2bl6yU8t4kPly1LSzzEjC92SsZU7UCt6dCiA1QE3ZlmblKSmoTTfX6wv+t/zbyTh8rbKmkFzRlq0yR6xZrgZGZ4lkw1WP/Q/aZoDBmSdTry85MTYZptPgly1vp94FCw6fa8/TaEZuhGgg0/ylmDVkDrZIho6YeIINM8WLN5RkDkvSWuNIxsk2eSPnkyIBcOH0+bc3cjmBJvr4gQIn0UPR+jh//gOx5h3jb1Layw8nxCUtyIHR1u8pGX3xpieTqyjjbWdFk/0yEM/s1dGqBkCMan8+rMVOkj7AupbBhO/FuUYM= Madhu Kiran@DESKTOP-I148625"
-
+ # public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDf+Z45qTZWlOzt4BasMulLwZEeBuP7W9WIQxifaQDTKSESf2v+jYTS+nE+xYkxAF8rwMKIbyTcreg9TjPah0O/3FfxRwkCEcAQYrP3DLQK5h2Tv56k3FmsX8gmmLrPFThDeYFKbai6JIcptA/s+z+5udTUDa+Ud6tnMesh5dLVSqqH0LjxsJ6wz+fLwPQDAy92AyzEHpgBJDQYNNMfoc2bl6yU8t4kPly1LSzzEjC92SsZU7UCt6dCiA1QE3ZlmblKSmoTTfX6wv+t/zbyTh8rbKmkFzRlq0yR6xZrgZGZ4lkw1WP/Q/aZoDBmSdTry85MTYZptPgly1vp94FCw6fa8/TaEZuhGgg0/ylmDVkDrZIho6YeIINM8WLN5RkDkvSWuNIxsk2eSPnkyIBcOH0+bc3cjmBJvr4gQIn0UPR+jh//gOx5h3jb1Layw8nxCUtyIHR1u8pGX3xpieTqyjjbWdFk/0yEM/s1dGqBkCMan8+rMVOkj7AupbBhO/FuUYM= Madhu Kiran@DESKTOP-I148625"
+   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCmSFPqFpZTus8YJcelhfsrB9EB5Ij20q+jesGFO/91lUToHghpPHDDSQcdzLkJTDIZCJta2/XwUqdmbwcjsHIDSbRT9a8VUUOPZfq6KPr1b7UkogKyy4xYst248YbYq4YKwVxKLm9Cvc8opkQlMiOnqgQVlgidD8FdQrIoBGww9EUGPHNU8iGhb0BADdo/CAJ9N0q2lmnNu8DKJo/G5jpI22ItyQkhTbpeWZbKfWKVMGdf/ZowpJygO8U4Mv2H8sm5rtULbalWLHn5YCUPTE2OOcXYQIBqNUgshwHZydSyfpF5m18KyqVYAE78JEisCRP3yaYOMhAOZOiPtH/8w1VQJQyfdNmG/NH5DV5OGaumCHBlzFHVDWoYVFATm13FX2kbp+6Lst3HOULiAgy6zim6ATJYO9inKhsU0Ar6554mixXiB0j7NUsWX1d5c3H5IOyDCnuZd/eQYJFAl838GY/oeyImfGLPQXZ7B59F1d/vOj1//F5QpI8++XrkPZLqvkc= Madhu Kiran@DESKTOP-I148625"
 }
 
 
@@ -224,7 +224,7 @@ resource "aws_instance" "jenkins" {
     aws_security_group.JENKINS-SG
   ]
 
-  ami           = "ami-0742b4e673072066f" 
+  ami           = "ami-09d3b3274b6c5d4aa" 
   # amazoon-linux
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.subnet1.id
@@ -245,14 +245,15 @@ resource "aws_instance" "jenkins" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo amazon-linux-extras install -y  epel",
+      "sudo amazon-linux-extras install -y epel",
       "sudo yum install wget ",
       "sudo yum update -y",
       "sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo",
       "sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key",
       "sudo yum update -y",
+      "sudo amazon-linux-extras install java-openjdk11 -y",
       "sudo yum install jenkins -y",
-      "sudo yum install java-1.8.0-openjdk-devel git python3 python3-pip maven -y",
+      "sudo yum install git python3 python3-pip maven -y",
       "python3 -m pip install --upgrade pip",
       "sudo systemctl daemon-reload",
       "sudo systemctl start jenkins",
@@ -279,7 +280,7 @@ resource "aws_instance" "MyApp" {
   ]
 
   # i.e. MyApp Installed!
-  ami           = "ami-0742b4e673072066f"
+  ami           = "ami-09d3b3274b6c5d4aa"
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.subnet1.id
 
