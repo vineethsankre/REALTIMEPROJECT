@@ -16,6 +16,6 @@ public class WelcomeController {
 		
 		
 		
-		return "Congratulation DevOps Engineers ! Cloud and DevOps Engineer jobs are recession proof.  All the Best for your bright futute !!!   -Madhukiran  7396627149 / 8374343733 "; //"application/json" mean this is a text not a redirect
+		return "Congratulations DevOps Engineers ! Cloud and DevOps Engineer jobs are recession proof.  All the Best for your bright futute !!!   -Madhukiran  7396627149 / 8374343733 "; //"application/json" mean this is a text not a redirect
 	}
 }
