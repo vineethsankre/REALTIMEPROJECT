@@ -12,6 +12,8 @@ terraform {
 provider "aws" {
   profile = "default"
   region  = "us-east-1"
+  access_key = "AKIA4KJYRHFOSNF4XBWY"
+  secret_key = "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"
 }
 
 # Creating a New Key
@@ -22,10 +24,11 @@ resource "aws_key_pair" "Key-Pair" {
 
   # Adding the SSH authorized key !
  # public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDf+Z45qTZWlOzt4BasMulLwZEeBuP7W9WIQxifaQDTKSESf2v+jYTS+nE+xYkxAF8rwMKIbyTcreg9TjPah0O/3FfxRwkCEcAQYrP3DLQK5h2Tv56k3FmsX8gmmLrPFThDeYFKbai6JIcptA/s+z+5udTUDa+Ud6tnMesh5dLVSqqH0LjxsJ6wz+fLwPQDAy92AyzEHpgBJDQYNNMfoc2bl6yU8t4kPly1LSzzEjC92SsZU7UCt6dCiA1QE3ZlmblKSmoTTfX6wv+t/zbyTh8rbKmkFzRlq0yR6xZrgZGZ4lkw1WP/Q/aZoDBmSdTry85MTYZptPgly1vp94FCw6fa8/TaEZuhGgg0/ylmDVkDrZIho6YeIINM8WLN5RkDkvSWuNIxsk2eSPnkyIBcOH0+bc3cjmBJvr4gQIn0UPR+jh//gOx5h3jb1Layw8nxCUtyIHR1u8pGX3xpieTqyjjbWdFk/0yEM/s1dGqBkCMan8+rMVOkj7AupbBhO/FuUYM= Madhu Kiran@DESKTOP-I148625"
-   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCmSFPqFpZTus8YJcelhfsrB9EB5Ij20q+jesGFO/91lUToHghpPHDDSQcdzLkJTDIZCJta2/XwUqdmbwcjsHIDSbRT9a8VUUOPZfq6KPr1b7UkogKyy4xYst248YbYq4YKwVxKLm9Cvc8opkQlMiOnqgQVlgidD8FdQrIoBGww9EUGPHNU8iGhb0BADdo/CAJ9N0q2lmnNu8DKJo/G5jpI22ItyQkhTbpeWZbKfWKVMGdf/ZowpJygO8U4Mv2H8sm5rtULbalWLHn5YCUPTE2OOcXYQIBqNUgshwHZydSyfpF5m18KyqVYAE78JEisCRP3yaYOMhAOZOiPtH/8w1VQJQyfdNmG/NH5DV5OGaumCHBlzFHVDWoYVFATm13FX2kbp+6Lst3HOULiAgy6zim6ATJYO9inKhsU0Ar6554mixXiB0j7NUsWX1d5c3H5IOyDCnuZd/eQYJFAl838GY/oeyImfGLPQXZ7B59F1d/vOj1//F5QpI8++XrkPZLqvkc= Madhu Kiran@DESKTOP-I148625"
+  # public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCmSFPqFpZTus8YJcelhfsrB9EB5Ij20q+jesGFO/91lUToHghpPHDDSQcdzLkJTDIZCJta2/XwUqdmbwcjsHIDSbRT9a8VUUOPZfq6KPr1b7UkogKyy4xYst248YbYq4YKwVxKLm9Cvc8opkQlMiOnqgQVlgidD8FdQrIoBGww9EUGPHNU8iGhb0BADdo/CAJ9N0q2lmnNu8DKJo/G5jpI22ItyQkhTbpeWZbKfWKVMGdf/ZowpJygO8U4Mv2H8sm5rtULbalWLHn5YCUPTE2OOcXYQIBqNUgshwHZydSyfpF5m18KyqVYAE78JEisCRP3yaYOMhAOZOiPtH/8w1VQJQyfdNmG/NH5DV5OGaumCHBlzFHVDWoYVFATm13FX2kbp+6Lst3HOULiAgy6zim6ATJYO9inKhsU0Ar6554mixXiB0j7NUsWX1d5c3H5IOyDCnuZd/eQYJFAl838GY/oeyImfGLPQXZ7B59F1d/vOj1//F5QpI8++XrkPZLqvkc= Madhu Kiran@DESKTOP-I148625"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDZcDRlfzg5imGtjf+c5VqeDJ+wZ9LaXOgKQF2uBAsqY88TJHZZUnKT4Tx41O6NSqNPNCQze4z2jB3/lKLNdfAjyS0PAiobMAWOyO7SDWB59h9Z2Fta3nV+Dq3sCK2rPWspCGlRbOM0cZ0SSUQa4H8mMZDBAR/GrjgpjfCqAvBMHmzWTzBAMbj/q4DUSJi8J+ltxXRsLEn7ze+ua75nRqthC5ilVqr27RyHdlsI0Dkh669rgWkqAHhyy8TGtKpvzNYSYpbTI+zVu3NT1rtqLYN8rZKEO+GBsRrOIW5ow1aMO5S47fOunnrd8tMu3vhLhnOiWfXWRKTw4JWg1nm3fnlhEbrtipmP0GgAuRzimf6NO3ljdFJ3OJu2fbke7qW5szAIdVNdJgyHOaKLR4DSEBnuZmaanHL/ik074KTZFlrocD6JYGpmSp+8liD5wjcxoLNLi8CiLPfdAda/9OcNvSIknLJjh0OtbXqPQzBPCifuXSJ5YUcXGRH3iTsvzhdcEb8= Madhu Kiran@DESKTOP-I148625"
 }
 
-
+#
 # Creating a VPC!
 resource "aws_vpc" "demo" {
 
@@ -182,7 +185,7 @@ resource "aws_security_group" "MYAPP-SG" {
     aws_security_group.JENKINS-SG
   ]
 
-  description = "MyApp Access only from the Webserver Instances!"
+  description = "security group for my app"
   name        = "myapp-sg"
   vpc_id      = aws_vpc.demo.id
 
@@ -192,7 +195,8 @@ resource "aws_security_group" "MYAPP-SG" {
     from_port       = 8080
     to_port         = 8080
     protocol        = "tcp"
-    security_groups = [aws_security_group.JENKINS-SG.id]
+   # security_groups = [aws_security_group.JENKINS-SG.id]
+   cidr_blocks = ["0.0.0.0/0"]
   }
 
   # Created an inbound rule for SSH
@@ -257,7 +261,8 @@ resource "aws_instance" "jenkins" {
       "python3 -m pip install --upgrade pip",
       "sudo systemctl daemon-reload",
       "sudo systemctl start jenkins",
-      "yes | sudo pip3 install ansible",
+     # "yes | sudo pip3 install ansible",
+      "sudo yum install ansible -y",
       "sudo amazon-linux-extras install docker -y",
       "sudo service docker start",
       "sudo usermod -aG docker $USER",
