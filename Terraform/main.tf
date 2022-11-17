@@ -224,7 +224,7 @@ resource "aws_instance" "jenkins" {
     aws_security_group.JENKINS-SG
   ]
 
-  ami           = "ami-0742b4e673072066f" 
+  ami           = "ami-09d3b3274b6c5d4aa" 
   # amazoon-linux
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.subnet1.id
@@ -245,18 +245,21 @@ resource "aws_instance" "jenkins" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo amazon-linux-extras install -y  epel",
+      "sudo amazon-linux-extras install -y epel",
       "sudo yum install wget ",
-      "sudo yum update -y",
+ #    "sudo yum update -y",
       "sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo",
       "sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key",
       "sudo yum update -y",
+      "sudo amazon-linux-extras install java-openjdk11 -y",	  
       "sudo yum install jenkins -y",
-      "sudo yum install java-1.8.0-openjdk-devel git python3 python3-pip maven -y",
-      "python3 -m pip install --upgrade pip",
+ 	    "sudo systemctl start jenkins",	 
+	    "sudo yum install git maven -y",
+#     "sudo yum install git python3 python3-pip maven -y",
+#     "python3 -m pip install --upgrade pip",
       "sudo systemctl daemon-reload",
-      "sudo systemctl start jenkins",
-      "yes | sudo pip3 install ansible",
+      "sudo yum install ansible -y",
+#      "yes | sudo pip3 install ansible",
       "sudo amazon-linux-extras install docker -y",
       "sudo service docker start",
       "sudo usermod -aG docker $USER",
@@ -279,7 +282,7 @@ resource "aws_instance" "MyApp" {
   ]
 
   # i.e. MyApp Installed!
-  ami           = "ami-0742b4e673072066f"
+  ami           = "ami-09d3b3274b6c5d4aa"
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.subnet1.id
 
