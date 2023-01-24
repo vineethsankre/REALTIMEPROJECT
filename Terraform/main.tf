@@ -21,7 +21,7 @@ resource "aws_key_pair" "Key-Pair" {
   key_name = "MyKey"
 
   # Adding the SSH authorized key !
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDf+Z45qTZWlOzt4BasMulLwZEeBuP7W9WIQxifaQDTKSESf2v+jYTS+nE+xYkxAF8rwMKIbyTcreg9TjPah0O/3FfxRwkCEcAQYrP3DLQK5h2Tv56k3FmsX8gmmLrPFThDeYFKbai6JIcptA/s+z+5udTUDa+Ud6tnMesh5dLVSqqH0LjxsJ6wz+fLwPQDAy92AyzEHpgBJDQYNNMfoc2bl6yU8t4kPly1LSzzEjC92SsZU7UCt6dCiA1QE3ZlmblKSmoTTfX6wv+t/zbyTh8rbKmkFzRlq0yR6xZrgZGZ4lkw1WP/Q/aZoDBmSdTry85MTYZptPgly1vp94FCw6fa8/TaEZuhGgg0/ylmDVkDrZIho6YeIINM8WLN5RkDkvSWuNIxsk2eSPnkyIBcOH0+bc3cjmBJvr4gQIn0UPR+jh//gOx5h3jb1Layw8nxCUtyIHR1u8pGX3xpieTqyjjbWdFk/0yEM/s1dGqBkCMan8+rMVOkj7AupbBhO/FuUYM= Madhu Kiran@DESKTOP-I148625"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDLeBTi0KxMNtIm5JMzrYTld2gpcsfd6dqjryFQyyjkhhM6Y445lEZYcPL3oSSlc9Icd6hPmfOcAcgJ5bkYWlCFgwMCcFqzp6WtQjxKDdH4LLMypoQbQ5HPoNU+QiDSsrsUJp+uu9szB0py2SBEi7nw7hDKHGfjQfhvq4Ihdr3hJd/XymTMY+5A9uyHperhJgLzUAn85DV6M1EVODIxHIndwRUxegPhPQ0nX7ieT8KQqJwfTrwaoukOzctm1zt9y02lyMztderzyf6vpU9M4Oc1rWemt7qk2yYXvW8wRV0Y9KU0Pe1Z2ZMc9s6rFeoY/tg1uvJT9i0uKCzVb8FKjXxSbPw+LY4cUhWLR6Jgq7pixSO7GkAtASjAgf8KSwqOQ0Pku3n4/LseCeCcbwUB1HYDOvBf7notwoLdrWbuUdXrmypn6C9PLkZ1JEe8whhmT/x8t2l5q0taR/rLe3xD/MjSWyrNrAkADWpM5e4cKaOkFx/yMX1QkUS3zaE8SH6ojCU= Madhu Kiran@DESKTOP-I148625"
 
 }
 
@@ -179,8 +179,7 @@ resource "aws_security_group" "MYAPP-SG" {
   depends_on = [
     aws_vpc.demo,
     aws_subnet.subnet1,
-    aws_security_group.JENKINS-SG
-  ]
+    ]
 
   description = "MyApp Access only from the Webserver Instances!"
   name        = "myapp-sg"
@@ -192,7 +191,8 @@ resource "aws_security_group" "MYAPP-SG" {
     from_port       = 8080
     to_port         = 8080
     protocol        = "tcp"
-    security_groups = [aws_security_group.JENKINS-SG.id]
+    cidr_blocks = ["0.0.0.0/0"]
+  #  security_groups = [aws_security_group.JENKINS-SG.id]
   }
 
   # Created an inbound rule for SSH
@@ -224,7 +224,7 @@ resource "aws_instance" "jenkins" {
     aws_security_group.JENKINS-SG
   ]
 
-  ami           = "ami-09d3b3274b6c5d4aa" 
+  ami           = "ami-0b5eea76982371e91" 
   # amazoon-linux
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.subnet1.id
@@ -253,11 +253,12 @@ resource "aws_instance" "jenkins" {
       "sudo yum update -y",
       "sudo amazon-linux-extras install java-openjdk11 -y",	  
       "sudo yum install jenkins -y",
- 	    "sudo systemctl start jenkins",	 
+ 	    "sudo systemctl start jenkins",
+      "sudo systemctl enable jenkins",
 	    "sudo yum install git maven -y",
 #     "sudo yum install git python3 python3-pip maven -y",
 #     "python3 -m pip install --upgrade pip",
-      "sudo systemctl daemon-reload",
+#      "sudo systemctl daemon-reload",
       "sudo yum install ansible -y",
 #      "yes | sudo pip3 install ansible",
       "sudo amazon-linux-extras install docker -y",
@@ -282,7 +283,7 @@ resource "aws_instance" "MyApp" {
   ]
 
   # i.e. MyApp Installed!
-  ami           = "ami-09d3b3274b6c5d4aa"
+  ami           = "ami-0b5eea76982371e91"
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.subnet1.id
 
