@@ -11,7 +11,7 @@ pipeline {
             steps {
                 sh 'cd Application && docker build -t devopshubg333/japp:v12 .'
                 sh 'docker login -u devopshubg333 -p Callidus21!@'
-                sh 'docker push devopshubg333/japp:v1'
+                sh 'docker push devopshubg333/japp:v12'
             }
         }
     }
