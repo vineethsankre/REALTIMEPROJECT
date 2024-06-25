@@ -7,12 +7,11 @@
   
   tasks:
     - name: Copy deployment.yaml to Kubernetes master
-      ansible.builtin.copy:
-        src: /var/lib/jenkins/workspace/job1/Ansible/deployment.yaml  # Adjust path as per your Jenkins workspace
-        dest: /home/ec2-user/deployment.yaml
-        remote_src: yes  # This is used to indicate the source file is on the Ansible controller
-      become_user: root 
-      become: yes 
+      copy:
+        src: /var/lib/jenkins/workspace/jenkins-ansible/Ansible/deployment.yaml  # Assuming Jenkins workspace variable
+        dest: /home/ec2-user/
+      become: yes  # Use sudo for copying if required
+      become_user: root  # Use a privileged user for copying if required
       
     - name: Apply Deployment
       ansible.builtin.command: kubectl apply -f /home/ec2-user/deployment.yaml
