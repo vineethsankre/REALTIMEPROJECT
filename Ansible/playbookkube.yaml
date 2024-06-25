@@ -12,6 +12,7 @@
         dest: /home/ec2-user/deployment.yaml
         remote_src: yes  # This is used to indicate the source file is on the Ansible controller
       become_user: root 
+      become: yes 
       
     - name: Apply Deployment
       ansible.builtin.command: kubectl apply -f /home/ec2-user/deployment.yaml
