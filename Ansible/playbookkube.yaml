@@ -3,6 +3,7 @@
   hosts: appserver  # Replace with your target Kubernetes master host or group
   gather_facts: no  # No need to gather facts for this playbook
   become: yes 
+  become_user: root
   
   tasks:
     - name: Copy deployment.yaml to Kubernetes master
