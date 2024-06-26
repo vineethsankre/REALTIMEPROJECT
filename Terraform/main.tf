@@ -1,15 +1,5 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 3.27"
-    }
-  }
 
-  required_version = ">= 0.14.9"
-}
-
-provider "aws" {
+provider "aws" { 
   profile = "default"
   region  = "us-east-1"
 }
@@ -21,13 +11,13 @@ resource "aws_key_pair" "Key-Pair" {
   key_name = "MyKey"
 
   # Adding the SSH authorized key !
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDLeBTi0KxMNtIm5JMzrYTld2gpcsfd6dqjryFQyyjkhhM6Y445lEZYcPL3oSSlc9Icd6hPmfOcAcgJ5bkYWlCFgwMCcFqzp6WtQjxKDdH4LLMypoQbQ5HPoNU+QiDSsrsUJp+uu9szB0py2SBEi7nw7hDKHGfjQfhvq4Ihdr3hJd/XymTMY+5A9uyHperhJgLzUAn85DV6M1EVODIxHIndwRUxegPhPQ0nX7ieT8KQqJwfTrwaoukOzctm1zt9y02lyMztderzyf6vpU9M4Oc1rWemt7qk2yYXvW8wRV0Y9KU0Pe1Z2ZMc9s6rFeoY/tg1uvJT9i0uKCzVb8FKjXxSbPw+LY4cUhWLR6Jgq7pixSO7GkAtASjAgf8KSwqOQ0Pku3n4/LseCeCcbwUB1HYDOvBf7notwoLdrWbuUdXrmypn6C9PLkZ1JEe8whhmT/x8t2l5q0taR/rLe3xD/MjSWyrNrAkADWpM5e4cKaOkFx/yMX1QkUS3zaE8SH6ojCU= Madhu Kiran@DESKTOP-I148625"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCbLsQRZ1UnHLYAkkvZKAu6s6l12V+e93CWa2/WszwzgLsUXnJwx/pYgj3qDGwIJxTDDqRWs++xdI3b89oki4AjBxOTTw7/S+2W8PEnArv5g0gmrdXYaxmg/qbpy8dVec+/7lczZ0QvkI47PVZFIgQmstewKNkSDrvotaOsd5upVfC0exzRk0g0xrDMLPNuSyCodkNfYS4qj6sD7V51yqji0xAbBY23Lh+d5oPhKL2AVzdvgm2bK+y+PvXfher3aWGvj0il9NWL3I5EF0qD1/LTwe/nMZ4bNAk6zJFGwR8SReMW3YU97A8MeWFirg7otcCOO00t4sb5s8SxySnHXwEkjOmYOqtz6au18C5xNGY7zKKnZm55UpoVVS81D16B1nccUC3e34iHTjCIlr+DL2XObiYALJ+waYN5ERhU0cu+FClAHa1J8Mf7xO1+9ShU3hZrVN3oV0AwCzN1fzjs3qQ04iP/DjKoIoTFcoOn+WMnOjB91fGYAGZ1OPbyDBJbr8k= Dell@DESKTOP-B69EJFC"
 
 }
 
 
 # Creating a VPC!
-resource "aws_vpc" "demo" {
+resource "aws_vpc" "prod" {
 
   # IP Range for the VPC
   cidr_block = "172.20.0.0/16"
@@ -35,7 +25,7 @@ resource "aws_vpc" "demo" {
   # Enabling automatic hostname assigning
   enable_dns_hostnames = true
   tags = {
-    Name = "demo"
+    Name = "prod"
   }
 }
 
@@ -43,11 +33,11 @@ resource "aws_vpc" "demo" {
 # Creating Public subnet!
 resource "aws_subnet" "subnet1" {
   depends_on = [
-    aws_vpc.demo
+    aws_vpc.prod
   ]
 
   # VPC in which subnet has to be created!
-  vpc_id = aws_vpc.demo.id
+  vpc_id = aws_vpc.prod.id
 
   # IP Range of this subnet
   cidr_block = "172.20.10.0/24"
@@ -68,12 +58,12 @@ resource "aws_subnet" "subnet1" {
 # Creating an Internet Gateway for the VPC
 resource "aws_internet_gateway" "Internet_Gateway" {
   depends_on = [
-    aws_vpc.demo,
+    aws_vpc.prod,
     aws_subnet.subnet1,
   ]
 
   # VPC in which it has to be created!
-  vpc_id = aws_vpc.demo.id
+  vpc_id = aws_vpc.prod.id
 
   tags = {
     Name = "IG-Public-&-Private-VPC"
@@ -83,12 +73,12 @@ resource "aws_internet_gateway" "Internet_Gateway" {
 # Creating an Route Table for the public subnet!
 resource "aws_route_table" "Public-Subnet-RT" {
   depends_on = [
-    aws_vpc.demo,
+    aws_vpc.prod,
     aws_internet_gateway.Internet_Gateway
   ]
 
   # VPC ID
-  vpc_id = aws_vpc.demo.id
+  vpc_id = aws_vpc.prod.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -104,7 +94,7 @@ resource "aws_route_table" "Public-Subnet-RT" {
 resource "aws_route_table_association" "RT-IG-Association" {
 
   depends_on = [
-    aws_vpc.demo,
+    aws_vpc.prod,
     aws_subnet.subnet1,
     aws_route_table.Public-Subnet-RT
   ]
@@ -120,7 +110,7 @@ resource "aws_route_table_association" "RT-IG-Association" {
 resource "aws_security_group" "JENKINS-SG" {
 
   depends_on = [
-    aws_vpc.demo,
+    aws_vpc.prod,
     aws_subnet.subnet1,
   ]
 
@@ -130,7 +120,7 @@ resource "aws_security_group" "JENKINS-SG" {
   name = "jenkins-sg"
 
   # VPC ID in which Security group has to be created!
-  vpc_id = aws_vpc.demo.id
+  vpc_id = aws_vpc.prod.id
 
   # Created an inbound rule for webserver access!
   ingress {
@@ -177,13 +167,13 @@ resource "aws_security_group" "JENKINS-SG" {
 resource "aws_security_group" "MYAPP-SG" {
 
   depends_on = [
-    aws_vpc.demo,
+    aws_vpc.prod,
     aws_subnet.subnet1,
     ]
 
   description = "MyApp Access only from the Webserver Instances!"
   name        = "myapp-sg"
-  vpc_id      = aws_vpc.demo.id
+  vpc_id      = aws_vpc.prod.id
 
   # Created an inbound rule for MyApp
   ingress {
@@ -219,14 +209,14 @@ resource "aws_security_group" "MYAPP-SG" {
 resource "aws_instance" "jenkins" {
 
   depends_on = [
-    aws_vpc.demo,
+    aws_vpc.prod,
     aws_subnet.subnet1,
     aws_security_group.JENKINS-SG
   ]
 
-  ami           = "ami-0b5eea76982371e91" 
+  ami           = "ami-01b799c439fd5516a" 
   # amazoon-linux
-  instance_type = "t2.micro"
+  instance_type = "t2.large"
   subnet_id     = aws_subnet.subnet1.id
 
   # Keyname and security group are obtained from the reference of their instances created above!
@@ -245,30 +235,27 @@ resource "aws_instance" "jenkins" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo amazon-linux-extras install -y epel",
       "sudo yum install wget ",
- #    "sudo yum update -y",
       "sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo",
- #    "sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key",
       "sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key",	    
-      "sudo yum update -y",
-      "sudo amazon-linux-extras install java-openjdk11 -y",	  
+      "sudo yum upgrade -y",
+      "sudo dnf install java-17-amazon-corretto -y",	  
       "sudo yum install jenkins -y",
  	    "sudo systemctl start jenkins",
       "sudo systemctl enable jenkins",
 	    "sudo yum install git maven -y",
-#     "sudo yum install git python3 python3-pip maven -y",
-#     "python3 -m pip install --upgrade pip",
-#      "sudo systemctl daemon-reload",
       "sudo yum install ansible -y",
-#      "yes | sudo pip3 install ansible",
-      "sudo amazon-linux-extras install docker -y",
+      "sudo yum install docker -y",
       "sudo service docker start",
       "sudo usermod -aG docker $USER",
       "sudo usermod -aG docker jenkins",
       "sudo systemctl enable docker.service",
       "sudo systemctl enable containerd.service",
-      "sudo service docker restart",
+      "systemctl restart docker",
+	    "sudo chmod 666 /var/run/docker.sock",
+      "systemctl restart docker",
+      "sudo docker run -itd --name sonar -p 9000:9000 sonarqube",
+      "sudo rpm -ivh https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.rpm",
     ]
   }
   tags = {
@@ -284,8 +271,9 @@ resource "aws_instance" "MyApp" {
   ]
 
   # i.e. MyApp Installed!
-  ami           = "ami-0b5eea76982371e91"
-  instance_type = "t2.micro"
+  ami           = "ami-01b799c439fd5516a" 
+  # amazoon-linux
+  instance_type = "t2.large"
   subnet_id     = aws_subnet.subnet1.id
 
   # Keyname and security group are obtained from the reference of their instances created above!
