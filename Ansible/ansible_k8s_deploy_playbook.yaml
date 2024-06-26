@@ -10,7 +10,7 @@
       copy:
         src: /var/lib/jenkins/workspace/cicd/Ansible/k8s_deployment.yaml  # Assuming Jenkins workspace variable
         dest: /home/ec2-user/
-      become: yes  # Use sudo for copying if required
+ ##     become: yes  # Use sudo for copying if required
  ##     become_user: root  # Use a privileged user for copying if required
       
     - name: Apply Deployment
