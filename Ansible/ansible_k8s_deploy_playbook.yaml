@@ -1,18 +1,14 @@
 ---
-- name: Deploy Kubernetes Application
+- name: Deploy Application into eks cluster 
   hosts: appserver  # Replace with your target Kubernetes master host or group
   gather_facts: no  # No need to gather facts for this playbook
   become: yes 
-##  become_user: root
-  
   tasks:
     - name: Copy k8s_deployment.yaml file to eks cluster
       copy:
         src: /var/lib/jenkins/workspace/cicd/Ansible/k8s_deployment.yaml  # Assuming Jenkins workspace variable
         dest: /home/ec2-user/
- ##     become: yes  # Use sudo for copying if required
- ##     become_user: root  # Use a privileged user for copying if required
-      
+
     - name: Apply Deployment
       ansible.builtin.command: kubectl apply -f /home/ec2-user/k8s_deployment.yaml
     
