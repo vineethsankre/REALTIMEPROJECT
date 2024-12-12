@@ -11,7 +11,7 @@ resource "aws_key_pair" "Key-Pair" {
   key_name = "MyKey"
 
   # Adding the SSH authorized key !
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCbLsQRZ1UnHLYAkkvZKAu6s6l12V+e93CWa2/WszwzgLsUXnJwx/pYgj3qDGwIJxTDDqRWs++xdI3b89oki4AjBxOTTw7/S+2W8PEnArv5g0gmrdXYaxmg/qbpy8dVec+/7lczZ0QvkI47PVZFIgQmstewKNkSDrvotaOsd5upVfC0exzRk0g0xrDMLPNuSyCodkNfYS4qj6sD7V51yqji0xAbBY23Lh+d5oPhKL2AVzdvgm2bK+y+PvXfher3aWGvj0il9NWL3I5EF0qD1/LTwe/nMZ4bNAk6zJFGwR8SReMW3YU97A8MeWFirg7otcCOO00t4sb5s8SxySnHXwEkjOmYOqtz6au18C5xNGY7zKKnZm55UpoVVS81D16B1nccUC3e34iHTjCIlr+DL2XObiYALJ+waYN5ERhU0cu+FClAHa1J8Mf7xO1+9ShU3hZrVN3oV0AwCzN1fzjs3qQ04iP/DjKoIoTFcoOn+WMnOjB91fGYAGZ1OPbyDBJbr8k= Dell@DESKTOP-B69EJFC"
+ public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDouWvckZHwdJGnjVaHmlVzhf0/28bt2xHJnO3BoONe82/ZHdYGaXNxaH+ttoHyy+12Jt0jKnEuDZn0h6S6WmKv+OQ/9LOjfngegwWHNVOpv9iEEsafOicCpnM49vJObnsw4wfnZ+QqJVEHh/++ilC7z9dUtW3egtDUMHJb6jAO0Wr7KWm8j0+WbhaZ7YZIrGjkwd+aG6PlIle8E8PZfvHFVW9IiAQAN0QcQG0jouqSlnzPlIishpw3o2diGzPILKQ5Kp5cmrPMj5iQOcfBVdsnpKGFzKqtjC3qrEgzc1CNZ0BMxPlm1KhspdblInDO3x+pXGS7r4KiFOJz6xw/hTSie6XDPIDpLdHt/US85Hox1479YCEEyfLQGfjOJj/jqIBiqAjw/L5KIUOTj34Vi26fG3/JFfGqDerFweCTgyF0oHUw0ozqpYFF+mWAczpPjCJeg0fGJuRctMGfV9aFeb98Ff6wG3b8DBb2gWOxDhXVihmWo7KLbMmHO7nruwxalHE= Dell@MADHU-KIRAN"
 
 }
 
@@ -153,6 +153,14 @@ resource "aws_security_group" "JENKINS-SG" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # Outward Network Traffic for the WordPress
   egress {
     description = "output from webserver"
@@ -214,7 +222,8 @@ resource "aws_instance" "jenkins" {
     aws_security_group.JENKINS-SG
   ]
 
-  ami           = "ami-01b799c439fd5516a" 
+  ami = "ami-0453ec754f44f9a4a"
+
   # amazoon-linux
   instance_type = "t2.large"
   subnet_id     = aws_subnet.subnet1.id
@@ -252,14 +261,14 @@ resource "aws_instance" "jenkins" {
       "sudo systemctl enable docker.service",
       "sudo systemctl enable containerd.service",
       "systemctl restart docker",
-	    "sudo chmod 666 /var/run/docker.sock",
+      "sudo chmod 666 /var/run/docker.sock",
       "systemctl restart docker",
       "sudo docker run -itd --name sonar -p 9000:9000 sonarqube",
       "sudo rpm -ivh https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.rpm",
     ]
   }
   tags = {
-    Name = "Jenkins_From_Terraform"
+    Name = "Jenkins_UTIL_From_Terraform"
   }
 
 }
@@ -271,9 +280,9 @@ resource "aws_instance" "MyApp" {
   ]
 
   # i.e. MyApp Installed!
-  ami           = "ami-01b799c439fd5516a" 
+  ami = "ami-0453ec754f44f9a4a"
   # amazoon-linux
-  instance_type = "t2.large"
+  instance_type = "t2.medium"
   subnet_id     = aws_subnet.subnet1.id
 
   # Keyname and security group are obtained from the reference of their instances created above!
