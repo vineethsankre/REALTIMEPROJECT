@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: mc-app
-        image: vineethsankre/foodmunchapp:17
+        image: vineethsankre/foodmunchapp:18
         ports:
         - containerPort: 8080
 ---
